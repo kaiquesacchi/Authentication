@@ -1,5 +1,4 @@
 import prisma from "../../../../lib/prisma";
-import users from "./users.json";
 
 interface iGetUser {
   id: string;
