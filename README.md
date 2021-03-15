@@ -1,34 +1,58 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Authentication
 
-## Getting Started
+## PostgreSQL Setup
 
-First, run the development server:
+Installation and Setup:
 
-```bash
-npm run dev
-# or
-yarn dev
+```shell
+    # Install postgres and utils.
+    sudo apt install postgresql postgresql-contrib
+    
+    # Edit the config file:
+    sudo nano /etc/postgresql/12/main/pg_hba.conf
+    # Change the socket connection auth method to 'md5':
+    # # TYPE	DATABASE		USER		ADDRESS		METHOD
+    #   local	all				all						md5
+    
+    # Restart the PostgreSQL server.
+    sudo service postgresql restart  
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Creating an user and database:
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```shell
+    # Access the PostgreSQL default user.
+    sudo -i -u postgres
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+    # Create a database
+    createdb <database_name>
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+    # Create a user
+    createuser --interactive
+    
+    Enter name of role to add: <username>
+    Shall the new role be a superuser? (y/n) n
+    Shall the new role be allowed to create databases? (y/n) n
+    Shall the new role be allowed to create more new roles? (y/n) n
 
-## Learn More
+    # Change the user password
+    \password <username>
 
-To learn more about Next.js, take a look at the following resources:
+    # Access the database.
+    psql -d <database_name> -U <username> -W
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Prisma Setup
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+For Prisma to be able to connect to the database, create the .env file:
 
-## Deploy on Vercel
+```
+    DATABASE_URL="postgresql://<username>:<password>@localhost:5432/<database_name>"
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To create the required tables, run `npx prisma db push --preview-feature`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+To visualize the database, run `npx prisma studio`
+
+> Every time the `prisma/schema.prisma` file gets updated, the prisma client must be updated using
+`npx prisma generate`
