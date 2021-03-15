@@ -11,8 +11,8 @@ Installation and Setup:
     # Edit the config file:
     sudo nano /etc/postgresql/12/main/pg_hba.conf
     # Change the socket connection auth method to 'md5':
-    # # TYPE	DATABASE		USER		ADDRESS		METHOD
-    #   local	all				all						md5
+    # # TYPE    DATABASE   USER   ADDRESS   METHOD
+    #   local   all        all              md5
     
     # Restart the PostgreSQL server.
     sudo service postgresql restart  
