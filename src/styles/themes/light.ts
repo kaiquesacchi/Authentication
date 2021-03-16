@@ -1,15 +1,19 @@
 export default {
   palette: {
     primary: {
-      main: "#ECCE8E",
-      contrast: "#000000",
+      main: "#a5243d",
+      contrast: "#FFFFFF",
     },
     secondary: {
-      main: "#270722",
+      main: "#746271",
       contrast: "#FFFFFF",
     },
     background: {
-      main: "#C2C6A7",
+      main: "#AFAAB9",
+      contrast: "#000000",
+    },
+    focusBlock: {
+      main: "#FFFFFF",
       contrast: "#000000",
     },
   },
