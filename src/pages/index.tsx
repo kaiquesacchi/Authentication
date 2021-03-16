@@ -2,6 +2,7 @@ import React, { useCallback, useRef } from "react";
 import FocusBlock from "../components/FocusBlock/FocusBlock";
 import TextInput from "../components/inputs/TextInput/TextInput";
 import PageLayout from "../components/PageLayout/PageLayout";
+import AuthController from "../controllers/AuthController";
 
 import * as SC from "../styles/pages/Home.style";
 export default function Home() {
@@ -11,8 +12,9 @@ export default function Home() {
   const handleSubmit = useCallback(
     (event: React.FormEvent) => {
       event.preventDefault();
-      console.log(refUsername.current?.value);
-      console.log(refPassword.current?.value);
+      const username = refUsername.current?.value || "";
+      const password = refPassword.current?.value || "";
+      AuthController.signIn(username, password);
     },
     [refUsername, refPassword]
   );
