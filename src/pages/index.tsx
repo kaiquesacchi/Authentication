@@ -1,22 +1,31 @@
+import { useLazyQuery } from "@apollo/client";
 import React, { useCallback, useRef } from "react";
 import FocusBlock from "../components/FocusBlock/FocusBlock";
 import TextInput from "../components/inputs/TextInput/TextInput";
 import PageLayout from "../components/PageLayout/PageLayout";
 import AuthController from "../controllers/AuthController";
+import { iSignIn, SIGN_IN } from "../graphql/queries/Auth";
 
 import * as SC from "../styles/pages/Home.style";
 export default function Home() {
-  const refUsername = useRef<HTMLInputElement>(null);
+  const [signIn, { data }] = useLazyQuery<iSignIn>(SIGN_IN);
+  const refEmail = useRef<HTMLInputElement>(null);
   const refPassword = useRef<HTMLInputElement>(null);
 
   const handleSubmit = useCallback(
     (event: React.FormEvent) => {
       event.preventDefault();
-      const username = refUsername.current?.value || "";
+      const email = refEmail.current?.value || "";
       const password = refPassword.current?.value || "";
-      AuthController.signIn(username, password);
+      signIn({
+        variables: {
+          email,
+          password,
+        },
+      });
+      // AuthController.signIn(email, password);
     },
-    [refUsername, refPassword]
+    [refEmail, refPassword]
   );
 
   return (
@@ -24,7 +33,7 @@ export default function Home() {
       <FocusBlock center>
         <SC.Title>Sign-In</SC.Title>
         <SC.Form onSubmit={handleSubmit}>
-          <TextInput ref={refUsername} label="Username" placeholder="your@email.com" type="email" />
+          <TextInput ref={refEmail} label="Email" placeholder="your@email.com" type="email" />
           <TextInput ref={refPassword} label="Password" placeholder="Password" type="password" />
           <SC.Divider />
           <SC.Button color="primary" type="submit">
