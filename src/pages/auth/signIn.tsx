@@ -7,7 +7,7 @@ import { iSignIn, SIGN_IN } from "../../graphql/queries/Auth";
 
 import * as SC from "../../styles/pages/auth/signIn.style";
 
-export default function Home() {
+export default function SignIn() {
   const [signIn, { data }] = useLazyQuery<iSignIn>(SIGN_IN);
   const refEmail = useRef<HTMLInputElement>(null);
   const refPassword = useRef<HTMLInputElement>(null);
