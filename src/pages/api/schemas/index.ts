@@ -11,5 +11,10 @@ export const typeDefs = gql`
   type Query {
     getUser(id: String!): User!
     getUsers: [User]
+    signIn(email: String!, password: String!): User
+  }
+
+  type Mutation {
+    signUp(name: String!, email: String!, password: String!): User
   }
 `;

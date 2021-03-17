@@ -1,23 +1,13 @@
-import prisma from "../../../../lib/prisma";
-
-interface iGetUser {
-  id: string;
-}
-async function getUser(_: any, args: iGetUser) {
-  return await prisma.users.findUnique({
-    where: {
-      id: Number(args.id) || -1,
-    },
-  });
-}
-
-async function getUsers() {
-  return await prisma.users.findMany();
-}
+import { signIn, signUp } from "./Auth";
+import { getUser, getUsers } from "./Users";
 
 export const resolvers = {
   Query: {
-    getUser: getUser,
-    getUsers: getUsers,
+    getUser,
+    getUsers,
+    signIn,
+  },
+  Mutation: {
+    signUp,
   },
 };
