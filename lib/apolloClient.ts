@@ -14,19 +14,20 @@ export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | null;
 
-function createApolloClient() {
+function createApolloClient(headers = {}) {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
     link: new HttpLink({
-      uri: "/api/graphql", // Server URL (must be absolute)
+      uri: "http://localhost:3000/api/graphql", // Server URL (must be absolute)
       credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
+      headers,
     }),
     cache: new InMemoryCache(),
   });
 }
 
-export function initializeApollo(initialState: NormalizedCacheObject | null = null) {
-  const _apolloClient = apolloClient ?? createApolloClient();
+export function initializeApollo(initialState: NormalizedCacheObject | null = null, headers = {}) {
+  const _apolloClient = apolloClient ?? createApolloClient(headers);
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // gets hydrated here
