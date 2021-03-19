@@ -1,6 +1,7 @@
 import prisma from "../../../lib/prisma";
 import jwt from "jsonwebtoken";
 import { iApolloContext } from "../../pages/api/graphql";
+import { AuthenticationError } from "apollo-server-errors";
 
 interface iSignIn {
   email: string;
@@ -15,13 +16,14 @@ export async function signIn(_: any, { email, password }: iSignIn, context: iApo
 
   // TODO: Will be hashed later.
   if (user?.password !== password) {
-    return null;
+    throw new AuthenticationError("Wrong username or password");
   }
+
   let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!);
   context.cookies.set("auth-token", token, {
     httpOnly: true,
     sameSite: "lax",
-    maxAge: 1 * 60 * 60 * 1000, // 12 Hour.
+    maxAge: 1 * 60 * 60 * 1000, // 1 Hour.
     secure: process.env.NODE_ENV === "production",
   });
   return user;
