@@ -11,13 +11,14 @@ import * as SC from "../styles/pages/index.style";
 
 export default function Home() {
   const router = useRouter();
-  const [signOut] = useMutation(MUTATION_SIGN_OUT);
+  const [signOut, { client }] = useMutation(MUTATION_SIGN_OUT);
   const { data, error } = useQuery<iGetMe>(GET_ME);
 
   const handleSignOut = useCallback(async () => {
     await signOut();
+    await client.clearStore();
     router.push("/auth/signIn");
-  }, [signOut, router]);
+  }, [signOut, router, client]);
 
   useEffect(() => {
     if (!error || error.graphQLErrors.length === 0) return;
