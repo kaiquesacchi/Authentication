@@ -1,16 +1,16 @@
-import { useLazyQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useRouter } from "next/dist/client/router";
 import React, { useCallback, useEffect, useRef } from "react";
 import FocusBlock from "../../components/FocusBlock/FocusBlock";
 import TextInput from "../../components/inputs/TextInput/TextInput";
 import PageLayout from "../../components/PageLayout/PageLayout";
-import { iSignIn, SIGN_IN } from "../../graphql/queries/Auth";
+import { iSignIn, MUTATION_SIGN_IN } from "../../graphql/queries/Auth";
 
 import * as SC from "../../styles/pages/auth/signIn.style";
 
 export default function SignIn() {
   const router = useRouter();
-  const [signIn, { data, error }] = useLazyQuery<iSignIn>(SIGN_IN);
+  const [signIn, { data, error }] = useMutation<iSignIn>(MUTATION_SIGN_IN);
   const refEmail = useRef<HTMLInputElement>(null);
   const refPassword = useRef<HTMLInputElement>(null);
 

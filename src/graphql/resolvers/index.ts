@@ -6,9 +6,9 @@ export const resolvers = {
     getMe,
     getUser,
     getUsers,
-    signIn,
   },
   Mutation: {
+    signIn,
     signUp,
   },
 };

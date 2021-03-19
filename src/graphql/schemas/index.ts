@@ -12,10 +12,10 @@ export const typeDefs = gql`
     getMe: User!
     getUser(id: String!): User!
     getUsers: [User]
-    signIn(email: String!, password: String!): User!
   }
 
   type Mutation {
+    signIn(email: String!, password: String!): User!
     signUp(name: String!, email: String!, password: String!): User!
   }
 `;
