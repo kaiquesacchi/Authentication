@@ -1,5 +1,6 @@
 import { useLazyQuery } from "@apollo/client";
-import React, { useCallback, useRef } from "react";
+import { useRouter } from "next/dist/client/router";
+import React, { useCallback, useEffect, useRef } from "react";
 import FocusBlock from "../../components/FocusBlock/FocusBlock";
 import TextInput from "../../components/inputs/TextInput/TextInput";
 import PageLayout from "../../components/PageLayout/PageLayout";
@@ -8,7 +9,8 @@ import { iSignIn, SIGN_IN } from "../../graphql/queries/Auth";
 import * as SC from "../../styles/pages/auth/signIn.style";
 
 export default function SignIn() {
-  const [signIn, { data }] = useLazyQuery<iSignIn>(SIGN_IN);
+  const router = useRouter();
+  const [signIn, { data, error }] = useLazyQuery<iSignIn>(SIGN_IN);
   const refEmail = useRef<HTMLInputElement>(null);
   const refPassword = useRef<HTMLInputElement>(null);
 
@@ -26,6 +28,20 @@ export default function SignIn() {
     },
     [refEmail, refPassword]
   );
+
+  useEffect(() => {
+    if (!router) return;
+    if (data) {
+      // Succeeded.
+      router.push("/");
+      return;
+    }
+    if (error) {
+      // Failed.
+      // TODO: Add toast to display error.
+      alert(error.message);
+    }
+  }, [data, error, router]);
 
   return (
     <PageLayout>
