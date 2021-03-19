@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { iApolloContext } from "../../pages/api/graphql";
 import { AuthenticationError, UserInputError } from "apollo-server-errors";
 import { validateEmail, validateName, validatePassword } from "../utils";
+import bcrypt from "bcrypt";
 
 interface iSignIn {
   email: string;
@@ -15,8 +16,7 @@ export async function signIn(_: any, { email, password }: iSignIn, context: iApo
     },
   });
 
-  // TODO: Will be hashed later.
-  if (user?.password !== password) {
+  if (!user?.password || !bcrypt.compareSync(password, user.password)) {
     throw new AuthenticationError("Wrong username or password");
   }
 
@@ -36,15 +36,16 @@ interface iSignUp extends iSignIn {
 export async function signUp(_: any, { name, email, password }: iSignUp, context: iApolloContext) {
   validateName(name);
   validateEmail(email);
-  // TODO: Will be hashed later.
   validatePassword(password);
+
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
     const user = await prisma.users.create({
       data: {
         name,
         email,
-        password,
+        password: hashedPassword,
       },
     });
     let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!);
