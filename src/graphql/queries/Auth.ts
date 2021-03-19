@@ -17,3 +17,9 @@ export interface iSignIn {
     email: string;
   };
 }
+
+export const MUTATION_SIGN_OUT = gql`
+  mutation {
+    signOut
+  }
+`;

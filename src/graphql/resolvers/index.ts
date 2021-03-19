@@ -1,4 +1,4 @@
-import { signIn, signUp } from "./Auth";
+import { signIn, signUp, signOut } from "./Auth";
 import { getMe, getUser, getUsers } from "./Users";
 
 export const resolvers = {
@@ -10,5 +10,6 @@ export const resolvers = {
   Mutation: {
     signIn,
     signUp,
+    signOut,
   },
 };

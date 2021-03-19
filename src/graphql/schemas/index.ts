@@ -17,5 +17,6 @@ export const typeDefs = gql`
   type Mutation {
     signIn(email: String!, password: String!): User!
     signUp(name: String!, email: String!, password: String!): User!
+    signOut: Boolean!
   }
 `;

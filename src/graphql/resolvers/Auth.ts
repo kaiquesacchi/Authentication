@@ -36,3 +36,13 @@ export async function signUp(_: any, { name, email, password }: iSignUp) {
   // TODO: Implement SignUp function.
   return null;
 }
+
+export async function signOut(_parent: any, _args: any, context: iApolloContext) {
+  context.cookies.set("auth-token", "", {
+    httpOnly: true,
+    sameSite: "lax",
+    expires: new Date(0),
+    secure: process.env.NODE_ENV === "production",
+  });
+  return true;
+}
