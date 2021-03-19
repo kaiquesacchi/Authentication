@@ -1,4 +1,6 @@
 import { useMutation } from "@apollo/client";
+import Link from "next/link";
+
 import { useRouter } from "next/dist/client/router";
 import React, { useCallback, useEffect, useRef } from "react";
 import FocusBlock from "../../components/FocusBlock/FocusBlock";
@@ -26,7 +28,7 @@ export default function SignIn() {
         },
       });
     },
-    [refEmail, refPassword]
+    [refEmail, refPassword, signIn]
   );
 
   useEffect(() => {
@@ -54,7 +56,9 @@ export default function SignIn() {
           <SC.Button color="primary" type="submit">
             Login
           </SC.Button>
-          <SC.Button color="secondary">Create an Account</SC.Button>
+          <Link href="/auth/signUp">
+            <SC.Button color="secondary">Create an Account</SC.Button>
+          </Link>
         </SC.Form>
       </FocusBlock>
     </PageLayout>

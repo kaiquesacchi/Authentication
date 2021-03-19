@@ -1,7 +1,8 @@
 import prisma from "../../../lib/prisma";
 import jwt from "jsonwebtoken";
 import { iApolloContext } from "../../pages/api/graphql";
-import { AuthenticationError } from "apollo-server-errors";
+import { AuthenticationError, UserInputError } from "apollo-server-errors";
+import { validateEmail, validateName, validatePassword } from "../utils";
 
 interface iSignIn {
   email: string;
@@ -32,9 +33,32 @@ export async function signIn(_: any, { email, password }: iSignIn, context: iApo
 interface iSignUp extends iSignIn {
   name: string;
 }
-export async function signUp(_: any, { name, email, password }: iSignUp) {
-  // TODO: Implement SignUp function.
-  return null;
+export async function signUp(_: any, { name, email, password }: iSignUp, context: iApolloContext) {
+  validateName(name);
+  validateEmail(email);
+  // TODO: Will be hashed later.
+  validatePassword(password);
+
+  try {
+    const user = await prisma.users.create({
+      data: {
+        name,
+        email,
+        password,
+      },
+    });
+    let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!);
+    context.cookies.set("auth-token", token, {
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: 1 * 60 * 60 * 1000, // 1 Hour.
+      secure: process.env.NODE_ENV === "production",
+    });
+    return user;
+  } catch (e) {
+    if (e.code === "P2002") throw new UserInputError("Email already registered");
+    throw e;
+  }
 }
 
 export async function signOut(_parent: any, _args: any, context: iApolloContext) {
