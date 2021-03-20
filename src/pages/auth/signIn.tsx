@@ -9,6 +9,8 @@ import PageLayout from "../../components/PageLayout/PageLayout";
 import { iSignIn, MUTATION_SIGN_IN } from "../../graphql/queries/Auth";
 
 import * as SC from "../../styles/pages/auth/signIn.style";
+import Form from "../../components/Form/Form";
+import Button from "../../components/inputs/Button/Button";
 
 export default function SignIn() {
   const router = useRouter();
@@ -49,17 +51,17 @@ export default function SignIn() {
     <PageLayout>
       <FocusBlock center>
         <SC.Title>Sign-In</SC.Title>
-        <SC.Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <TextInput ref={refEmail} label="Email" placeholder="your@email.com" type="email" />
           <TextInput ref={refPassword} label="Password" placeholder="Password" type="password" />
           <SC.Divider />
-          <SC.Button color="primary" type="submit">
+          <Button accent="primary" type="submit">
             Login
-          </SC.Button>
+          </Button>
           <Link href="/auth/signUp">
-            <SC.Button color="secondary">Create an Account</SC.Button>
+            <Button accent="secondary">Create an Account</Button>
           </Link>
-        </SC.Form>
+        </Form>
       </FocusBlock>
     </PageLayout>
   );

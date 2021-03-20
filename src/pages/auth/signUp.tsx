@@ -7,7 +7,9 @@ import TextInput from "../../components/inputs/TextInput/TextInput";
 import PageLayout from "../../components/PageLayout/PageLayout";
 import { iSignUp, MUTATION_SIGN_UP } from "../../graphql/queries/Auth";
 
-import * as SC from "../../styles/pages/auth/signIn.style";
+import * as SC from "../../styles/pages/auth/signUp.style";
+import Form from "../../components/Form/Form";
+import Button from "../../components/inputs/Button/Button";
 
 export default function SignUp() {
   const router = useRouter();
@@ -52,18 +54,18 @@ export default function SignUp() {
     <PageLayout>
       <FocusBlock center>
         <SC.Title>Sign-Up</SC.Title>
-        <SC.Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <TextInput ref={refName} label="Name" placeholder="Your Full Name" type="text" />
           <TextInput ref={refEmail} label="Email" placeholder="your@email.com" type="email" />
           <TextInput ref={refPassword} label="Password" placeholder="Password" type="password" />
           <SC.Divider />
-          <SC.Button color="primary" type="submit">
+          <Button accent="primary" type="submit">
             Create Account
-          </SC.Button>
+          </Button>
           <Link href="/auth/signIn">
-            <SC.Button color="secondary">Login to an Existing Account</SC.Button>
+            <Button accent="secondary">Login to an Existing Account</Button>
           </Link>
-        </SC.Form>
+        </Form>
       </FocusBlock>
     </PageLayout>
   );
