@@ -49,8 +49,7 @@ export default function SignIn() {
 
   return (
     <PageLayout>
-      <FocusBlock center>
-        <SC.Title>Sign-In</SC.Title>
+      <FocusBlock center title="Sign-In">
         <Form onSubmit={handleSubmit}>
           <TextInput ref={refEmail} label="Email" placeholder="your@email.com" type="email" />
           <TextInput ref={refPassword} label="Password" placeholder="Password" type="password" />

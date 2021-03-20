@@ -15,3 +15,7 @@ export const Container = styled.div<iContainer>`
   border-radius: 10px;
   box-shadow: 0px 0px 7px 3px #00000020;
 `;
+
+export const Title = styled.h1`
+  padding-bottom: 20px;
+`;

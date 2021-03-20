@@ -4,6 +4,8 @@ import { useRouter } from "next/dist/client/router";
 import { useCallback, useEffect } from "react";
 import { APOLLO_STATE_PROP_NAME, initializeApollo } from "../../lib/apolloClient";
 import FocusBlock from "../components/FocusBlock/FocusBlock";
+import Form from "../components/Form/Form";
+import Button from "../components/inputs/Button/Button";
 import PageLayout from "../components/PageLayout/PageLayout";
 import { MUTATION_SIGN_OUT } from "../graphql/queries/Auth";
 import { GET_ME, iGetMe } from "../graphql/queries/Users";
@@ -28,10 +30,13 @@ export default function Home() {
   }, [error]);
   return (
     <PageLayout>
-      <FocusBlock>
-        <h1>Auth Succeeded</h1>
-        <p>Name: {data?.getMe?.name}</p>
-        <button onClick={handleSignOut}>Sign Out</button>
+      <FocusBlock center title="Auth Succeeded">
+        <Form>
+          <p>Name: {data?.getMe?.name}</p>
+          <Button accent="primary" onClick={handleSignOut}>
+            Sign Out
+          </Button>
+        </Form>
       </FocusBlock>
     </PageLayout>
   );

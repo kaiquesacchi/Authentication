@@ -2,7 +2,7 @@ import React, { ButtonHTMLAttributes } from "react";
 import * as SC from "./styles";
 
 interface iProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  accent: "primary" | "secondary";
+  accent?: "primary" | "secondary";
   children?: React.ReactNode;
 }
 

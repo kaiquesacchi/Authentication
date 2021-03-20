@@ -52,8 +52,7 @@ export default function SignUp() {
 
   return (
     <PageLayout>
-      <FocusBlock center>
-        <SC.Title>Sign-Up</SC.Title>
+      <FocusBlock center title="Sign-Up">
         <Form onSubmit={handleSubmit}>
           <TextInput ref={refName} label="Name" placeholder="Your Full Name" type="text" />
           <TextInput ref={refEmail} label="Email" placeholder="your@email.com" type="email" />
