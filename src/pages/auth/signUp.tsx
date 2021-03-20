@@ -7,9 +7,9 @@ import TextInput from "../../components/inputs/TextInput/TextInput";
 import PageLayout from "../../components/PageLayout/PageLayout";
 import { iSignUp, MUTATION_SIGN_UP } from "../../graphql/queries/Auth";
 
-import * as SC from "../../styles/pages/auth/signUp.style";
 import Form from "../../components/Form/Form";
 import Button from "../../components/inputs/Button/Button";
+import Divider from "../../components/Divider/Divider";
 
 export default function SignUp() {
   const router = useRouter();
@@ -57,7 +57,7 @@ export default function SignUp() {
           <TextInput ref={refName} label="Name" placeholder="Your Full Name" type="text" />
           <TextInput ref={refEmail} label="Email" placeholder="your@email.com" type="email" />
           <TextInput ref={refPassword} label="Password" placeholder="Password" type="password" />
-          <SC.Divider />
+          <Divider />
           <Button accent="primary" type="submit">
             Create Account
           </Button>
