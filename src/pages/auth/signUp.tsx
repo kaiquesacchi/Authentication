@@ -1,17 +1,22 @@
-import Link from "next/link";
-import { useMutation } from "@apollo/client";
-import { useRouter } from "next/dist/client/router";
+// React/NextJS
 import React, { useCallback, useEffect, useRef } from "react";
+import Link from "next/link";
+import { useRouter } from "next/dist/client/router";
+
+// NPM Packages
+import { toast } from "react-toastify";
+
+// Apollo/Queries
+import { useMutation } from "@apollo/client";
+import { iSignUp, MUTATION_SIGN_UP } from "../../graphql/queries/Auth";
+
+// Components
 import FocusBlock from "../../components/FocusBlock/FocusBlock";
 import TextInput from "../../components/inputs/TextInput/TextInput";
 import PageLayout from "../../components/PageLayout/PageLayout";
-import { iSignUp, MUTATION_SIGN_UP } from "../../graphql/queries/Auth";
-
 import Form from "../../components/Form/Form";
 import Button from "../../components/inputs/Button/Button";
 import Divider from "../../components/Divider/Divider";
-
-import { toast } from "react-toastify";
 
 export default function SignUp() {
   const router = useRouter();

@@ -1,17 +1,23 @@
-import { useMutation, useQuery } from "@apollo/client";
+// React/NextJS
+import React, { useCallback, useEffect } from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/dist/client/router";
-import React, { useCallback, useEffect } from "react";
+
+// NPM Packages
+import { toast } from "react-toastify";
+
+// Apollo/Queries
+import { useMutation, useQuery } from "@apollo/client";
 import { APOLLO_STATE_PROP_NAME, initializeApollo } from "../../lib/apolloClient";
-import { Divider } from "../components/Divider/styles";
+import { MUTATION_SIGN_OUT } from "../graphql/queries/Auth";
+import { GET_ME, iGetMe } from "../graphql/queries/Users";
+
+// Components
+import Divider from "../components/Divider/Divider";
 import FocusBlock from "../components/FocusBlock/FocusBlock";
 import Form from "../components/Form/Form";
 import Button from "../components/inputs/Button/Button";
 import PageLayout from "../components/PageLayout/PageLayout";
-import { MUTATION_SIGN_OUT } from "../graphql/queries/Auth";
-import { GET_ME, iGetMe } from "../graphql/queries/Users";
-
-import { toast } from "react-toastify";
 
 export default function Home() {
   const router = useRouter();
