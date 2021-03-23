@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/dist/client/router";
-import { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { APOLLO_STATE_PROP_NAME, initializeApollo } from "../../lib/apolloClient";
 import { Divider } from "../components/Divider/styles";
 import FocusBlock from "../components/FocusBlock/FocusBlock";
@@ -11,16 +11,27 @@ import PageLayout from "../components/PageLayout/PageLayout";
 import { MUTATION_SIGN_OUT } from "../graphql/queries/Auth";
 import { GET_ME, iGetMe } from "../graphql/queries/Users";
 
+import { toast } from "react-toastify";
+
 export default function Home() {
   const router = useRouter();
   const [signOut, { client }] = useMutation(MUTATION_SIGN_OUT);
   const { data, error } = useQuery<iGetMe>(GET_ME);
 
-  const handleSignOut = useCallback(async () => {
-    await signOut();
-    await client.clearStore();
-    router.push("/auth/signIn");
-  }, [signOut, router, client]);
+  const handleSignOut = useCallback(
+    async (event: React.FormEvent) => {
+      event.preventDefault();
+      try {
+        await signOut();
+        await client.clearStore();
+        router.push("/auth/signIn");
+        toast.dark("Signed out Successfully");
+      } catch {
+        toast.error("Failed to Sign Out");
+      }
+    },
+    [signOut, router, client]
+  );
 
   useEffect(() => {
     if (!error || error.graphQLErrors.length === 0) return;

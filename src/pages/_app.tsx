@@ -7,6 +7,9 @@ import { ThemeProvider } from "styled-components";
 import light from "../styles/themes/light";
 import GlobalStyles from "../styles/global";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function MyApp({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps);
   return (
@@ -14,6 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={light}>
         <GlobalStyles />
         <Component {...pageProps} />
+        <ToastContainer />
       </ThemeProvider>
     </ApolloProvider>
   );

@@ -12,6 +12,8 @@ import Form from "../../components/Form/Form";
 import Button from "../../components/inputs/Button/Button";
 import { Divider } from "../../components/Divider/styles";
 
+import { toast } from "react-toastify";
+
 export default function SignIn() {
   const router = useRouter();
   const [signIn, { data, error }] = useMutation<iSignIn>(MUTATION_SIGN_IN);
@@ -37,13 +39,13 @@ export default function SignIn() {
     if (!router) return;
     if (data) {
       // Succeeded.
+      toast.dark("Sign-In succeeded");
       router.push("/");
       return;
     }
     if (error) {
       // Failed.
-      // TODO: Add toast to display error.
-      alert(error.message);
+      toast.error(error.message);
     }
   }, [data, error, router]);
 
