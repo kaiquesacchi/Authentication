@@ -23,6 +23,14 @@ function createApolloClient(headers = {}) {
       headers,
     }),
     cache: new InMemoryCache(),
+    defaultOptions: {
+      mutate: {
+        errorPolicy: "all",
+      },
+      query: {
+        errorPolicy: "all",
+      },
+    },
   });
 }
 
