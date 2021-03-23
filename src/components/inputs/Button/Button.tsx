@@ -6,6 +6,12 @@ interface iProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
 }
 
-export default function Button({ children, ...rest }: iProps) {
-  return <SC.Button {...rest}>{children}</SC.Button>;
-}
+const Button: React.ForwardRefRenderFunction<HTMLButtonElement, iProps> = ({ children, ...rest }, ref) => {
+  return (
+    <SC.Button {...rest} ref={ref}>
+      {children}
+    </SC.Button>
+  );
+};
+
+export default React.forwardRef(Button);
