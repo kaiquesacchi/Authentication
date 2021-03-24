@@ -17,4 +17,11 @@ export default {
       contrast: "#000000",
     },
   },
+  breakpoints: {
+    xl: "1920px",
+    lg: "1024px",
+    md: "600px",
+    sm: "450px",
+    xs: "300px",
+  },
 };

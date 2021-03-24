@@ -11,7 +11,7 @@ import { useMutation } from "@apollo/client";
 import { iSignIn, MUTATION_SIGN_IN } from "../../graphql/queries/Auth";
 
 // Components
-import FocusBlock from "../../components/FocusBlock/FocusBlock";
+import AuthFocusBlock from "../../components/FocusBlock/Auth/Auth";
 import TextInput from "../../components/inputs/TextInput/TextInput";
 import PageLayout from "../../components/PageLayout/PageLayout";
 import Form from "../../components/Form/Form";
@@ -55,7 +55,7 @@ export default function SignIn() {
 
   return (
     <PageLayout>
-      <FocusBlock center title="Sign-In">
+      <AuthFocusBlock center title="Sign In">
         <Form onSubmit={handleSubmit}>
           <TextInput ref={refEmail} label="Email" placeholder="your@email.com" type="email" />
           <TextInput ref={refPassword} label="Password" placeholder="Password" type="password" />
@@ -67,7 +67,7 @@ export default function SignIn() {
             <Button accent="secondary">Create an Account</Button>
           </Link>
         </Form>
-      </FocusBlock>
+      </AuthFocusBlock>
     </PageLayout>
   );
 }

@@ -14,7 +14,7 @@ import { GET_ME, iGetMe } from "../graphql/queries/Users";
 
 // Components
 import Divider from "../components/Divider/Divider";
-import FocusBlock from "../components/FocusBlock/FocusBlock";
+import FocusBlock from "../components/FocusBlock/Base/Base";
 import Form from "../components/Form/Form";
 import Button from "../components/inputs/Button/Button";
 import PageLayout from "../components/PageLayout/PageLayout";
