@@ -1,32 +1,29 @@
 import prisma from "../../../lib/prisma";
-import jwt from "jsonwebtoken";
 import { iApolloContext } from "../../pages/api/graphql";
 import { AuthenticationError, UserInputError } from "apollo-server-errors";
-import { validateEmail, validateName, validatePassword } from "../utils";
+import { validateEmail, validateName, validatePassword } from "../utils/validators";
 import bcrypt from "bcrypt";
+import { removeAuthCookie, setAuthCookie } from "../utils/authCookie";
 
 interface iSignIn {
   email: string;
   password: string;
 }
 export async function signIn(_: any, { email, password }: iSignIn, context: iApolloContext) {
+  // Gets user database entry by email.
   const user = await prisma.users.findUnique({
     where: {
       email,
     },
   });
 
+  // Verifies the password.
   if (!user?.password || !bcrypt.compareSync(password, user.password)) {
     throw new AuthenticationError("Wrong username or password");
   }
 
-  let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!);
-  context.cookies.set("auth-token", token, {
-    httpOnly: true,
-    sameSite: "lax",
-    maxAge: 1 * 60 * 60 * 1000, // 1 Hour.
-    secure: process.env.NODE_ENV === "production",
-  });
+  // SignIn authorized.
+  setAuthCookie(user.id, context);
   return user;
 }
 
@@ -34,10 +31,12 @@ interface iSignUp extends iSignIn {
   name: string;
 }
 export async function signUp(_: any, { name, email, password }: iSignUp, context: iApolloContext) {
+  // Validates all fields before attempting to save on the database.
   validateName(name);
   validateEmail(email);
   validatePassword(password);
 
+  // The password must be hashed before being sent to the database.
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
@@ -48,26 +47,20 @@ export async function signUp(_: any, { name, email, password }: iSignUp, context
         password: hashedPassword,
       },
     });
-    let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!);
-    context.cookies.set("auth-token", token, {
-      httpOnly: true,
-      sameSite: "lax",
-      maxAge: 1 * 60 * 60 * 1000, // 1 Hour.
-      secure: process.env.NODE_ENV === "production",
-    });
+
+    setAuthCookie(user.id, context);
     return user;
   } catch (e) {
-    if (e.code === "P2002") throw new UserInputError("Email already registered");
-    throw e;
+    switch (e.code) {
+      case "P2002":
+        throw new UserInputError("Email already registered");
+      default:
+        throw e;
+    }
   }
 }
 
 export async function signOut(_parent: any, _args: any, context: iApolloContext) {
-  context.cookies.set("auth-token", "", {
-    httpOnly: true,
-    sameSite: "lax",
-    expires: new Date(0),
-    secure: process.env.NODE_ENV === "production",
-  });
+  removeAuthCookie(context);
   return true;
 }
