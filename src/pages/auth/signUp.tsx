@@ -11,11 +11,11 @@ import { useMutation } from "@apollo/client";
 import { iSignUp, MUTATION_SIGN_UP } from "../../graphql/queries/Auth";
 
 // Components
-import AuthFocusBlock from "../../components/FocusBlock/Auth/Auth";
-import TextInput from "../../components/inputs/TextInput/TextInput";
+import AuthFocusBlock from "../../components/_focusBlocks/Auth/Auth";
+import TextInput from "../../components/_inputs/TextInput/TextInput";
 import PageLayout from "../../components/PageLayout/PageLayout";
 import Form from "../../components/Form/Form";
-import Button from "../../components/inputs/Button/Button";
+import Button from "../../components/_inputs/Button/Button";
 import Divider from "../../components/Divider/Divider";
 
 export default function SignUp() {

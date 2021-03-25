@@ -14,9 +14,9 @@ import { GET_ME, iGetMe } from "../graphql/queries/Users";
 
 // Components
 import Divider from "../components/Divider/Divider";
-import FocusBlock from "../components/FocusBlock/Base/Base";
+import FocusBlock from "../components/_focusBlocks/Base/Base";
 import Form from "../components/Form/Form";
-import Button from "../components/inputs/Button/Button";
+import Button from "../components/_inputs/Button/Button";
 import PageLayout from "../components/PageLayout/PageLayout";
 
 export default function Home() {
