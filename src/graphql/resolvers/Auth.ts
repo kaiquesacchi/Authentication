@@ -1,9 +1,16 @@
-import prisma from "../../../lib/prisma";
+import bcrypt from "bcrypt";
+
 import { iApolloContext } from "../../pages/api/graphql";
 import { AuthenticationError, UserInputError } from "apollo-server-errors";
-import { validateEmail, validateName, validatePassword } from "../utils/validators";
-import bcrypt from "bcrypt";
+
+import prisma from "../../../lib/prisma";
+
 import { removeAuthCookie, setAuthCookie } from "../utils/authCookie";
+import { validateEmail, validateName, validatePassword } from "../utils/validators";
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                       Sign In                                                      */
+/* ------------------------------------------------------------------------------------------------------------------ */
 
 interface iSignIn {
   email: string;
@@ -26,6 +33,10 @@ export async function signIn(_: any, { email, password }: iSignIn, context: iApo
   setAuthCookie(user.id, context);
   return user;
 }
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                       Sign Up                                                      */
+/* ------------------------------------------------------------------------------------------------------------------ */
 
 interface iSignUp extends iSignIn {
   name: string;
@@ -59,6 +70,10 @@ export async function signUp(_: any, { name, email, password }: iSignUp, context
     }
   }
 }
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                      Sign Out                                                      */
+/* ------------------------------------------------------------------------------------------------------------------ */
 
 export async function signOut(_parent: any, _args: any, context: iApolloContext) {
   removeAuthCookie(context);
