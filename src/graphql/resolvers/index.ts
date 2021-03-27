@@ -1,5 +1,6 @@
 import { signIn, signUp, signOut } from "./Auth";
 import { getMe, getUser, getUsers } from "./Users";
+import { signInWithGoogle } from "./GoogleAuth";
 
 export const resolvers = {
   Query: {
@@ -11,5 +12,6 @@ export const resolvers = {
     signIn,
     signUp,
     signOut,
+    signInWithGoogle,
   },
 };

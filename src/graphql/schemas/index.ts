@@ -5,7 +5,6 @@ export const typeDefs = gql`
     id: ID
     name: String
     email: String
-    password: String
   }
 
   type Query {
@@ -18,5 +17,7 @@ export const typeDefs = gql`
     signIn(email: String!, password: String!): User!
     signUp(name: String!, email: String!, password: String!): User!
     signOut: Boolean!
+
+    signInWithGoogle(googleIDToken: String!): User!
   }
 `;
