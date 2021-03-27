@@ -18,18 +18,13 @@ import Form from "../../components/Form/Form";
 import Button from "../../components/_inputs/Button/Button";
 import Divider from "../../components/Divider/Divider";
 import GoogleLogin, { GoogleLoginResponse } from "react-google-login";
+import { iSignInWithGoogle, MUTATION_SIGN_IN_WITH_GOOGLE } from "../../graphql/queries/GoogleAuth";
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                    Google OAuth                                                    */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-const googleOAuthToken = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_TOKEN;
-
-function googleSuccess(response: GoogleLoginResponse) {
-  const name = response.getBasicProfile().getName();
-  const email = response.getBasicProfile().getEmail();
-  const googleIDToken = response.getAuthResponse().id_token;
-}
+const googleOAuthClientID = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID;
 
 function googleFailure(error: any) {
   toast.error("Could not authenticate with Google");
@@ -38,9 +33,26 @@ function googleFailure(error: any) {
 
 export default function SignIn() {
   const router = useRouter();
-  const [signIn, { data, error }] = useMutation<iSignIn>(MUTATION_SIGN_IN);
+  const [signIn, { data: data_signIn, error: error_signIn }] = useMutation<iSignIn>(MUTATION_SIGN_IN);
+  const [
+    signInWithGoogle,
+    { data: data_signInWithGoogle, error: error_signInWithGoogle },
+  ] = useMutation<iSignInWithGoogle>(MUTATION_SIGN_IN_WITH_GOOGLE);
+
   const refEmail = useRef<HTMLInputElement>(null);
   const refPassword = useRef<HTMLInputElement>(null);
+
+  const googleSuccess = useCallback(
+    (response: GoogleLoginResponse) => {
+      const googleIDToken = response.getAuthResponse().id_token;
+      signInWithGoogle({
+        variables: {
+          googleIDToken,
+        },
+      });
+    },
+    [signInWithGoogle]
+  );
 
   const handleSubmit = useCallback(
     (event: React.FormEvent) => {
@@ -57,19 +69,28 @@ export default function SignIn() {
     [refEmail, refPassword, signIn]
   );
 
-  useEffect(() => {
+  const handleServerResponse = useCallback(() => {
     if (!router) return;
-    if (data) {
-      // Succeeded.
+
+    /* ------------------------------------------------- Succeeded. ------------------------------------------------- */
+    if (data_signIn || data_signInWithGoogle) {
       toast.dark("Sign-In succeeded");
       router.push("/");
       return;
     }
-    if (error) {
-      // Failed.
-      toast.error(error.message);
+
+    /* --------------------------------------------------- Failed --------------------------------------------------- */
+    if (error_signIn) {
+      toast.error(error_signIn.message);
+      return;
     }
-  }, [data, error, router]);
+    if (error_signInWithGoogle) {
+      toast.error(error_signInWithGoogle);
+    }
+  }, [router, data_signIn, data_signInWithGoogle, error_signIn, error_signInWithGoogle]);
+
+  /* --------------------------------------------------- useEffect -------------------------------------------------- */
+  useEffect(handleServerResponse, [data_signIn, data_signInWithGoogle, error_signIn, error_signInWithGoogle]);
 
   return (
     <PageLayout>
@@ -84,9 +105,9 @@ export default function SignIn() {
           <Link href="/auth/signUp">
             <Button accent="secondary">Create an Account</Button>
           </Link>
-          {googleOAuthToken && (
+          {googleOAuthClientID && (
             <GoogleLogin
-              clientId={googleOAuthToken}
+              clientId={googleOAuthClientID}
               onSuccess={(r) => googleSuccess(r as GoogleLoginResponse)}
               onFailure={googleFailure}
             />
