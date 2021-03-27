@@ -17,6 +17,24 @@ import PageLayout from "../../components/PageLayout/PageLayout";
 import Form from "../../components/Form/Form";
 import Button from "../../components/_inputs/Button/Button";
 import Divider from "../../components/Divider/Divider";
+import GoogleLogin, { GoogleLoginResponse } from "react-google-login";
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                    Google OAuth                                                    */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+const googleOAuthToken = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_TOKEN;
+
+function googleSuccess(response: GoogleLoginResponse) {
+  const name = response.getBasicProfile().getName();
+  const email = response.getBasicProfile().getEmail();
+  const googleIDToken = response.getAuthResponse().id_token;
+}
+
+function googleFailure(error: any) {
+  toast.error("Could not authenticate with Google");
+}
+/* ------------------------------------------------------------------------------------------------------------------ */
 
 export default function SignIn() {
   const router = useRouter();
@@ -66,6 +84,13 @@ export default function SignIn() {
           <Link href="/auth/signUp">
             <Button accent="secondary">Create an Account</Button>
           </Link>
+          {googleOAuthToken && (
+            <GoogleLogin
+              clientId={googleOAuthToken}
+              onSuccess={(r) => googleSuccess(r as GoogleLoginResponse)}
+              onFailure={googleFailure}
+            />
+          )}
         </Form>
       </AuthFocusBlock>
     </PageLayout>
