@@ -47,6 +47,8 @@ Creating an user and database:
 For Prisma to be able to connect to the database, create the `.env` file:
 
 ```
+    // /.env
+
     DATABASE_URL="postgresql://<username>:<password>@localhost:5432/<database_name>"
 ```
 
@@ -56,3 +58,21 @@ To visualize the database, run `npx prisma studio`
 
 > Every time the `prisma/schema.prisma` file gets updated, the prisma client must be updated using
 > `npx prisma generate`
+
+## Google OAuth Setup
+
+The first step is to create a project on [Google Console](http://console.developers.google.com/)
+
+1. Select `CREATE PROJECT` and choose a name to the project.
+2. Select `OAuth consent screen` on the Side Menu and fill the required fields.
+   > Add at least the `userinfo.email` and `userinfo.profile` scopes.
+3. Select `Credentials` on the Side Menu, click on `CREATE CREDENTIALS` and `OAuth client ID`
+4. Choose `Web application`, any name and add an `Authorized JavaScript origin`
+5. Copy `Your Client ID` and add it to your `.env.local` file:
+
+```
+    // /.env.local
+
+    JWT_SECRET = <JWT_SECRET>
+    NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID = <YOUR_CLIENT_ID>
+```
