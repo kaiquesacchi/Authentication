@@ -1,10 +1,21 @@
 # Authentication
 
+An Authentication boilerplate for `NextJS` + `Apollo GraphQL` + `Prisma ORM` projects.
+
+> The session is managed by `HTTP-only Auth Cookies`, set by the back-end
+
+> `Google OAuth` is available
+
+> Design based on Google's Material UI, using server-side rendered `Styled Components`
+
+![Sign-in page](./images/SignIn.png)
+![Sign-up page](./images/SignUp.png)
+
 ## PostgreSQL Setup
 
 Installation and Setup:
 
-```shell
+```sh
     # Install postgres and utils.
     sudo apt install postgresql postgresql-contrib
 
@@ -20,7 +31,7 @@ Installation and Setup:
 
 Creating an user and database:
 
-```shell
+```sh
     # Access the PostgreSQL default user.
     sudo -i -u postgres
 
@@ -46,8 +57,8 @@ Creating an user and database:
 
 For Prisma to be able to connect to the database, create the `.env` file:
 
-```
-    // /.env
+```sh
+    # .env
 
     DATABASE_URL="postgresql://<username>:<password>@localhost:5432/<database_name>"
 ```
@@ -70,9 +81,24 @@ The first step is to create a project on [Google Console](http://console.develop
 4. Choose `Web application`, any name and add an `Authorized JavaScript origin`
 5. Copy `Your Client ID` and add it to your `.env.local` file:
 
-```
-    // /.env.local
+```sh
+    # .env.local
 
-    JWT_SECRET = <JWT_SECRET>
-    NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID = <YOUR_CLIENT_ID>
+    JWT_SECRET = "<JWT_SECRET>"
+    NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID = "<YOUR_CLIENT_ID>"
+```
+
+> On the same `.env.local` file, add a random JWT Secret.
+
+## Run the project
+
+After setting everything up, the only task left is to run the project. You can do so on development or production mode:
+
+```sh
+# development
+yarn dev
+
+# production
+yarn build
+yarn start
 ```
